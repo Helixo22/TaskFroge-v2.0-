@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFroge - Focus</title>
+  <!-- Include Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+ 
+    .timer-btn {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+  <!-- hero -->
+  <div class="flex justify-end w-full mb-4">
+    <button id="pauseSwitchBtn" class="absolute right-40 top-4 focus-mode-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full mr-4">
+      5-Minute Pause
+    </button>
+    <button id="focusSwitchBtn" class="absolute right-4 top-4 focus-mode-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
+      Focus Mode
+    </button>
+  </div>
+  <div class="text-center">
+    <button id="changeTimerBtn" class="absolute left-4 top-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">
+      Change Timer
+    </button>
+    <h1 class="text-4xl font-bold mb-4">TaskFroge Focus with Level</h1>
+    <div id="timer" class="text-6xl mb-8 rounded-full border-4 border-blue-500 py-4 px-8">
+      25:00
+    </div>
+    <div class="mb-8">
+      <button id="startBtn" class="timer-btn bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-8 rounded-full">
+        Start
+      </button>
+      <button id="pauseBtn" class="timer-btn bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full hidden">
+        Pause
+      </button>
+      <button id="resetBtn" class="timer-btn bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full">
+        Reset
+      </button>
+    </div>
+    <div class="mb-8">
+      <div id="progressBar" class="w-full bg-gray-300 rounded-full overflow-hidden h-8">
+        <div id="progress" class="bg-blue-500 h-full"></div>
+      </div>
+      <div id="xpDisplay" class="text-2xl font-semibold mt-2">
+        XP: <span id="xpValue">0</span> / <span id="xpNeeded">100</span>
+      </div>
+      <div id="levelDisplay" class="text-2xl font-semibold mt-2">
+        Level: <span id="levelValue">1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level Up Popup -->
+  <div id="unlockPopup" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white rounded-lg p-8">
+      <h2 class="text-2xl font-semibold mb-4">Congratulations!</h2>
+      <p class="mb-4">You've unlocked FROG! Go to the locker to check it out.</p>
+      <a href="locker.html"><button id="goToLockerBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">Go to Locker</button></a>
+      <button id="closeUnlockPopupBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-4">Close</button>
+    </div>
+  </div>
+
+  <!-- Timer Popup -->
+  <div id="timerPopup" class="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg p-8">
+      <label for="newTime" class="block mb-2 font-semibold">Set New Time (in minutes):</label>
+      <input type="number" id="newTime" name="newTime" class="w-full mb-4 p-2 border rounded-md">
+      <div class="flex justify-between">
+        <button id="setTimeBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+          Set Time
+        </button>
+        <button id="closePopupBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <a href="home.html"><button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">Go Back</button></a>
+
+  <script>
+    // JavaScript logic for timer
+let intervalId;
+let timeLeft = 1500; // 25 minutes in seconds
+let xp = parseInt(localStorage.getItem('xp')) || 0; // Retrieve XP from local storage or set to 0 if not available
+let xpNeeded = 100; // Initial XP needed to level up
+let level = parseInt(localStorage.getItem('level')) || 1; // Retrieve level from local storage or set to 1 if not available
+
+// Function to update timer display
+function updateTimer() {
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  document.getElementById('timer').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+// Function to start the timer
+function startTimer() {
+  intervalId = setInterval(() => {
+    if (timeLeft > 0) {
+      timeLeft--;
+      updateTimer();
+      updateProgress();
+    } else {
+      clearInterval(intervalId);
+      alert('Time\'s up!');
+      xp += 10; // Gain 10 XP when timer finishes
+      document.getElementById('xpValue').innerText = xp;
+      if (xp >= xpNeeded) {
+        levelUp();
+      }
+      timeLeft = 1500; // Reset time to 25 minutes
+      updateTimer(); // Update timer display
+      // Store XP in local storage
+      localStorage.setItem('xp', xp);
+    }
+  }, 1000);
+}
+
+// Function to pause the timer
+function pauseTimer() {
+  clearInterval(intervalId);
+}
+
+// Function to reset the timer
+function resetTimer() {
+  clearInterval(intervalId);
+  timeLeft = 1500;
+  updateTimer();
+  document.getElementById('pauseBtn').classList.add('hidden');
+  document.getElementById('startBtn').classList.remove('hidden');
+}
+
+// Function to open the timer popup
+function openPopup() {
+  document.getElementById('timerPopup').classList.remove('hidden');
+}
+
+// Function to close the timer popup
+function closePopup() {
+  document.getElementById('timerPopup').classList.add('hidden');
+}
+
+// Function to set the timer with a new time
+function setTime() {
+  const newTime = parseInt(document.getElementById('newTime').value);
+  if (!isNaN(newTime) && newTime > 0) {
+    timeLeft = newTime * 60;
+    updateTimer();
+    closePopup();
+  } else {
+    alert('Please enter a valid time (in minutes).');
+  }
+}
+
+// Function to update XP progress display
+function updateProgress() {
+  const percentage = (xp / xpNeeded) * 100;
+  document.getElementById('progress').style.width = `${percentage}%`;
+  document.getElementById('xpValue').innerText = xp;
+  document.getElementById('levelValue').innerText = level;
+  // Dynamically calculate XP needed based on current level
+  xpNeeded = level * 10;
+  document.getElementById('xpNeeded').innerText = xpNeeded;
+  // Store level and XP in local storage
+  localStorage.setItem('level', level);
+}
+
+// Function to level up
+function levelUp() {
+  level++;
+  xp = 0; // Reset XP to 0 after leveling up
+  updateProgress(); // Update progress display
+  // Store level and XP in local storage
+  localStorage.setItem('level', level);
+}
+
+// Function to display the level up popup
+function showUnlockPopup() {
+  document.getElementById('unlockPopup').classList.remove('hidden');
+}
+
+// Function to close the level up popup
+function closeUnlockPopup() {
+  document.getElementById('unlockPopup').classList.add('hidden');
+}
+
+// Event listeners for various buttons
+document.getElementById('pauseSwitchBtn').addEventListener('click', () => {
+  timeLeft = 300; // 5 minutes in seconds
+  updateTimer();
+  closePopup();
+  document.getElementById('pauseSwitchBtn').classList.add('bg-green-500');
+  document.getElementById('pauseSwitchBtn').classList.remove('bg-blue-500');
+  document.getElementById('focusSwitchBtn').classList.add('bg-blue-500');
+  document.getElementById('focusSwitchBtn').classList.remove('bg-green-500');
+});
+
+document.getElementById('focusSwitchBtn').addEventListener('click', () => {
+  timeLeft = 1500; // 25 minutes in seconds
+  updateTimer();
+  closePopup();
+  document.getElementById('focusSwitchBtn').classList.add('bg-green-500');
+  document.getElementById('focusSwitchBtn').classList.remove('bg-blue-500');
+  document.getElementById('pauseSwitchBtn').classList.add('bg-blue-500');
+  document.getElementById('pauseSwitchBtn').classList.remove('bg-green-500');
+});
+
+document.getElementById('changeTimerBtn').addEventListener('click', () => {
+  openPopup();
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  startTimer();
+  document.getElementById('startBtn').classList.add('hidden');
+  document.getElementById('pauseBtn').classList.remove('hidden');
+});
+
+document.getElementById('pauseBtn').addEventListener('click', () => {
+  pauseTimer();
+  document.getElementById('pauseBtn').classList.add('hidden');
+  document.getElementById('startBtn').classList.remove('hidden');
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  resetTimer();
+});
+
+document.getElementById('setTimeBtn').addEventListener('click', () => {
+  setTime();
+});
+
+document.getElementById('closePopupBtn').addEventListener('click', () => {
+  closePopup();
+});
+
+// Initialize XP progress display
+updateProgress();
+
+</script>
+</body>
+</html>

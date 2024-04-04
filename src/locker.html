@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frog Locker</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    .back-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <button id="backBtn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md back-btn">Go Back</button>
+  
+  <div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold text-blue-500 mb-8">Frog Locker</h1>
+   
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+      
+      <div class="bg-white rounded-lg p-4 shadow-md" id="frog1">
+        <h2 class="text-lg font-semibold mb-2">Basic Frog🐸</h2>
+        <img src="./img/frog1.jpg" alt="Frog 1" class="w-full h-30 object-cover mb-2 rounded-lg">
+        <p class="text-sm">A simple frog that unlocks at level 1</p>
+        
+        <button id="buyBtn1" class="buy-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-full mt-4 hover:bg-blue-600">Buy for 10 XP</button>
+        <p id="possession1" class="text-green-500 font-semibold hidden">In possession: <span id="count1">0</span></p>
+      </div>
+
+      <div class="bg-white rounded-lg p-4 shadow-md" id="frog2">
+        <h2 class="text-lg font-semibold mb-2">Blue Frog🐸</h2>
+        <img src="./img/frog2.png" alt="Frog 2" class="w-full h-30 object-cover mb-2 rounded-lg">
+        <p class="text-sm">Blue frog that unlocks at level 2</p>
+        
+        <button id="buyBtn2" class="buy-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-full mt-4 hover:bg-blue-600">Buy for 20 XP</button>
+        <p id="possession2" class="text-green-500 font-semibold hidden">In possession: <span id="count2">0</span></p>
+      </div>
+      
+      <div class="bg-white rounded-lg p-4 shadow-md" id="frog3">
+        <h2 class="text-lg font-semibold mb-2">Radioactive Frogs🐸</h2>
+        <img src="./img/frog3.png" alt="Frog 3" class="w-full h-30 object-cover mb-2 rounded-lg">
+        <p class="text-sm">A simple radioactive frogs, unlocks at level 3</p>
+        
+        <button id="buyBtn3" class="buy-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-full mt-4 hover:bg-blue-600">Buy for 30 XP</button>
+        <p id="possession3" class="text-green-500 font-semibold hidden">In possession: <span id="count3">0</span></p>
+      </div>
+      
+      <div class="bg-white rounded-lg p-4 shadow-md" id="frog4">
+        <h2 class="text-lg font-semibold mb-2">Ladybug Frog🐸(f.s)</h2>
+        <img src="./img/frog4.png" alt="Frog 4" class="w-full h-30 object-cover mb-2 rounded-lg">
+        <p class="text-sm">A frog that looks like a ladybug or and a ladybug that looks like her an unsolvable dilemma, unlocks at level 4</p>
+        
+        <button id="buyBtn4" class="buy-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-full mt-4 hover:bg-blue-600">Buy for 40 XP</button>
+        <p id="possession4" class="text-green-500 font-semibold hidden">In possession: <span id="count4">0</span></p>
+      </div>
+      
+      <div class="bg-white rounded-lg p-4 shadow-md" id="frog5">
+        <h2 class="text-lg font-semibold mb-2">Cactus Frog🐸</h2>
+        <img src="./img/frog5.png" alt="Frog 5" class="w-full h-30 object-cover mb-2 rounded-lg">
+        <p class="text-sm">A cactus frog, a very rare species found only in the desert, is unlocked at level 5</p>
+        
+        <button id="buyBtn5" class="buy-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-full mt-4 hover:bg-blue-600">Buy for 50 XP</button>
+        <p id="possession5" class="text-green-500 font-semibold hidden">In possession: <span id="count5">0</span></p>
+      </div>
+      
+    </div>
+  </div>
+
+  <div id="xpIndicator" class="absolute top-4 right-4 bg-blue-500 text-white font-bold py-2 px-4 rounded-full">
+    XP: <span id="xpDisplay">0</span>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+    let frogPossession = JSON.parse(localStorage.getItem('frogPossession')) || {};
+    let frogCount = {
+        '1': 0,
+        '2': 0,
+        '3': 0,
+        '4': 0,
+        '5': 0
+    };
+
+    // Function to handle buying frogs
+    function buyFrog(frogId, cost) {
+        let currentXP = parseInt(localStorage.getItem('xp')) || 0;
+        
+        if (currentXP >= cost) {
+            // Deduct XP
+            currentXP -= cost;
+            localStorage.setItem('xp', currentXP);
+
+            // Increment frog count
+            frogCount[frogId]++;
+            frogPossession[frogId] = frogCount[frogId];
+
+            // Add frog to possession
+            localStorage.setItem('frogPossession', JSON.stringify(frogPossession));
+
+            // Update display
+            updateXPDisplay();
+            updateFrogPossessionDisplay(frogId);
+
+            // Hide buy button
+            $(`#buyBtn${frogId}`).hide();
+        } else {
+            alert("You don't have enough XP to buy this frog!");
+        }
+    }
+
+    // Function to update XP display
+    function updateXPDisplay() {
+        const xpDisplay = $('#xpDisplay');
+        if (xpDisplay) {
+            xpDisplay.text(localStorage.getItem('xp') || 0);
+        }
+    }
+
+    // Function to update frog possession display
+    function updateFrogPossessionDisplay(frogId) {
+        if (frogPossession[frogId]) {
+            $(`#possession${frogId}`).show();
+            $(`#count${frogId}`).text(frogPossession[frogId]);
+        }
+    }
+
+    // Function to go back to the previous page
+    $('#backBtn').click(function() {
+        window.history.back();
+    });
+
+    // Event listener for buy buttons
+    $('.buy-btn').click(function() {
+        const frogId = $(this).attr('id').replace('buyBtn', '');
+        const cost = frogId * 10;
+        buyFrog(frogId, cost);
+    });
+
+    // Call functions to initialize display
+    updateXPDisplay();
+    for (let i = 1; i <= 5; i++) {
+        updateFrogPossessionDisplay(`${i}`);
+    }
+});
+
+  </script>
+</body>
+</html>

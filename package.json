@@ -1,0 +1,24 @@
+{
+  "name": "taskfroge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/publisher-github": "^7.3.1",
+    "daisyui": "^4.7.3",
+    "electron": "^29.1.1",
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "electron-squirrel-startup": "^1.0.0",
+    "firebase": "^10.9.0",
+    "rippleui": "^1.12.1"
+  }
+}

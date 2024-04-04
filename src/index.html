@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Taskfroge - Login</title>
+    
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/motion-tailwind/motion-tailwind.css" rel="stylesheet">
+  </head>
+
+  <body class="h-screen flex justify-center items-center bg-white">
+
+    
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js"></script>
+
+
+    
+  <script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyBx-wRWdrQoBO0u2gP6wukwZ-NvRFwurmo",
+        authDomain: "taskfroge-6c8fe.firebaseapp.com",
+     projectId: "taskfroge-6c8fe",
+  storageBucket: "taskfroge-6c8fe.appspot.com",
+  messagingSenderId: "86252234624",
+  appId: "1:86252234624:web:0506b792c61eff5ad18365",
+  measurementId: "G-6W1B72EYQQ"
+}
+firebase.initializeApp(firebaseConfig)
+firebase.analytics()
+function login() {
+  var _0x26c477 = document.getElementById('email').value,
+    _0x4f9987 = document.getElementById('password').value
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(_0x26c477, _0x4f9987)
+    .then((_0x8a7c51) => {
+      window.location.href = 'home.html'
+    })
+    .catch((_0x3dfb5e) => {
+      var _0x29ceb2 = _0x3dfb5e.code,
+        _0x1fff6f = _0x3dfb5e.message
+      alert(_0x1fff6f)
+    })
+}
+function register() {
+  var _0x5ff3c6 = document.getElementById('email').value,
+    _0x1f1e50 = document.getElementById('password').value
+  firebase
+    .auth()
+    .createUserWithEmailAndPassword(_0x5ff3c6, _0x1f1e50)
+    .then((_0x949737) => {
+      window.location.href = 'home.html'
+    })
+    .catch((_0x230c9d) => {
+      var _0x1b14a7 = _0x230c9d.code,
+        _0x7579ed = _0x230c9d.message
+      alert(_0x7579ed)
+    })
+}
+
+  </script>
+
+
+ <!-- Login Form -->
+ <div class="container flex flex-col mx-auto bg-gray-150 rounded-lg pt-12 my-5">
+    <div class="flex justify-center w-full h-full my-auto xl:gap-14 lg:justify-normal md:gap-5 draggable">
+<div class="flex items-center justify-center w-full lg:p-12">
+ <div class="flex items-center xl:p-10">
+   <form class="flex flex-col w-full h-full pb-6 text-center bg-gray-150 rounded-3xl">
+     <h3 class="mb-3 text-4xl font-extrabold text-dark-grey-900">Sign In/Up</h3>
+     <p class="mb-4 text-grey-700">Enter your email and password</p>
+     <div class="flex items-center mb-3">
+     </div>
+     <label for="email" class="mb-2 text-sm text-start text-grey-900">Email*</label>
+     <input id="email" type="email" placeholder="mail@loopple.com" class="flex items-center w-full px-5 py-4 mr-2 text-sm font-medium outline-none focus:bg-grey-400 mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+     <label for="password" class="mb-2 text-sm text-start text-grey-900">Password*</label>
+     <input id="password" type="password" placeholder="Enter a password" class="flex items-center w-full px-5 py-4 mb-5 mr-2 text-sm font-medium outline-none focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+     <div class="flex flex-row justify-between mb-8">
+     </div>
+     <button type="button" onclick="login()" class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-blue-500">Sign In</button>
+     <button type="button" onclick="register()" class="w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-blue-500">Sign Up</button>
+
+     <a class="text-black" href="home.html">Continue without login</a>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+</div>
+  </body>
+</html>
