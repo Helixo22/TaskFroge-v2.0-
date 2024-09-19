@@ -1,5 +1,5 @@
 
-# TaskFroge
+# TaskFroge🐸
 
 Seamlessly manage your tasks and boost productivity with our intuitive Pomodoro timer. Stay focused, achieve more.
 
@@ -8,20 +8,18 @@ Seamlessly manage your tasks and boost productivity with our intuitive Pomodoro 
 ![App Screenshot](img2024.png)
 
 
-## Installation
+## Installation🌐
 
-Install TaskFroge from here:
+Try TaskFroge from here:
 
-"Note: The button to install the app has a 2 second of delay."
-
-[Download Now!](https://taskfroge-6c8fe.web.app/#)
+[Try Now!](https://taskfroge-6c8fe.web.app/#)
     
-## Support
+## Support🚨
 
 For support, email capassoa2922@gmail.com
 
 
-## Contributing
+## Contributing🙇
 
 Contributions are always welcome!
 
