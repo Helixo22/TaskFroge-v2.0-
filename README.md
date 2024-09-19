@@ -12,7 +12,7 @@ Seamlessly manage your tasks and boost productivity with our intuitive Pomodoro 
 
 Try TaskFroge from here:
 
-[Try Now!](https://taskfroge-6c8fe.web.app/#)
+[Try Now!](https://taskfroge1.web.app/home.html)
     
 ## Support🚨
 
