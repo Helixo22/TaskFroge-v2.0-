@@ -3,7 +3,7 @@
 
 Seamlessly manage your tasks and boost productivity with our intuitive Pomodoro timer. Stay focused, achieve more.
 
-## Screenshots
+## Screenshot
 
 ![App Screenshot](img2024.png)
 
